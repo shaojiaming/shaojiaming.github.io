@@ -1,11 +1,12 @@
 ---
 title: Tomcat集群（linux） 
 date: 2017-03-17 15:01:49
+categories: 力量之源
 tags: [java,tomcat,apache]
 ---
 本文在red hat下进行搭建的，参考网上的搭建步骤结合自己的实际操作，从系统安装到最终的搭建进行详细的说明。
 <!--more-->
-### 目录
+## 目录
 	一.	前期准备	
 	二.	环境安装	
 		1.	安装gcc 和g++	
@@ -13,12 +14,10 @@ tags: [java,tomcat,apache]
 		3.	配置java运行环境变量	
 		4.	配置tomcat	
 		5.	配置JK连接器	
-	三.	测试负载apache负载均衡是否生效	
-	四.	tomcat性能优化	
-		1.	tomcat内存优化	
-		2.	tomcat 线程优化	
+	三.	测试apache负载均衡是否生效	
 
-## 一.	前期准备
+
+## 前期准备
 ### 安装介质 :
 
 |工具   | 说明 |
@@ -32,7 +31,7 @@ tags: [java,tomcat,apache]
 | Tomcat 7.0.75                      | Tomcat安装包                          |
 | jdk-7u79-linux-x64.tar.gz       | Java运行环境                          |
 
-## 二.	环境安装
+## 环境安装
 ###	关闭linux selinux
 1、	root用户登录
 2、	cd /etc/selinux
@@ -197,7 +196,7 @@ worker.loadBalanceServers.sticky_session=true  #会话是否有粘性，false表
 
 4.重启apache
 
-## 三.	测试apache负载均衡是否生效
+## 测试apache负载均衡是否生效
 1.	创建两个项目test
 2.	在index.jsp中分别添加如下代码
 ``` stylus
