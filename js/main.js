@@ -1,22 +1,23 @@
 require([], function (){
 
+    var jsPath = yiliaConfig.rootUrl + "js\/"
     var isMobileInit = false;
     var loadMobile = function(){
-        require([yiliaConfig.rootUrl + 'js/mobile.js'], function(mobile){
+        require([jsPath + 'mobile.js'], function(mobile){
             mobile.init();
             isMobileInit = true;
-        })
+        });
     }
     var isPCInit = false;
     var loadPC = function(){
-        require([yiliaConfig.rootUrl + 'js/pc.js'], function(pc){
+        require([jsPath + 'pc.js'], function(pc){
             pc.init();
             isPCInit = true;
-        })
+        });
     }
 
-    var browser = {
-        versions: function() {
+    var browser={
+        versions:function(){
         var u = window.navigator.userAgent;
         return {
             trident: u.indexOf('Trident') > -1, //IE内核
@@ -34,36 +35,36 @@ require([], function (){
         }()
     }
 
-    $(window).bind("resize", function() {
-        if (isMobileInit && isPCInit) {
+    $(window).bind("resize", function(){
+        if(isMobileInit && isPCInit){
             $(window).unbind("resize");
             return;
         }
         var w = $(window).width();
-        if (w >= 700) {
+        if(w >= 700){
             loadPC();
-        } else {
+        }else{
             loadMobile();
         }
     });
 
-    if(!!browser.versions.mobile || $(window).width() < 800){
+    if(browser.versions.mobile === true || $(window).width() < 800){
         loadMobile();
-    } else {
+    }else{
         loadPC();
     }
 
     resetTags = function(){
         var tags = $(".tagcloud a");
         for(var i = 0; i < tags.length; i++){
-            var num = Math.floor(Math.random()*7);
+            var num = parseInt(7*Math.random());
             tags.eq(i).addClass("color" + num);
-        }
+        };
         $(".article-category a:nth-child(-n+2)").attr("class", "color0");
     }
 
-    // fancyBox
-    if(!!yiliaConfig.fancybox){
+    //是否使用fancybox
+    if(yiliaConfig.fancybox === true){
         require([yiliaConfig.fancybox_js], function(pc){
             var isFancy = $(".isFancy");
             if(isFancy.length != 0){
@@ -78,61 +79,70 @@ require([], function (){
                     var height = imgArr.eq(i).attr("height");
                     imgArr.eq(i).replaceWith("<a href='"+src+"' title='"+title+"' rel='fancy-group' class='fancy-ctn fancybox'><img src='"+src+"' width="+width+" height="+height+" title='"+title+"' alt='"+title+"'></a>");
                 }
-                $(".article-inner .fancy-ctn").fancybox({ type: "image" });
+
+                $(".article-inner .fancy-ctn").fancybox();
             }
-        })
+        });
+
     }
+    //是否开启动画
+    if(yiliaConfig.animate === true){
 
-    // Animate on Homepage
-    if(!!yiliaConfig.animate) {
-        if(!!yiliaConfig.isHome) {
-            require([yiliaConfig.scrollreveal], function (ScrollReveal) {
-                var animationNames = [
-                "pulse", "fadeIn","fadeInRight", "flipInX", "lightSpeedIn","rotateInUpLeft", "slideInUp","zoomIn",
-                ],
-                len = animationNames.length,
-                randomAnimationName = animationNames[Math.ceil(Math.random() * len) - 1];
+      if(yiliaConfig.isHome === true) {
+        // 滚动条监听使用scrollreveal.js
+        // https://github.com/jlmakes/scrollreveal.js
+        require([yiliaConfig.scrollreveal], function (ScrollReveal) {
+          // 更多animation:
+          // http://daneden.github.io/animate.css/
+          var animationNames = [
+            "pulse", "fadeIn","fadeInRight", "flipInX", "lightSpeedIn","rotateInUpLeft", "slideInUp","zoomIn",
+            ],
+            len = animationNames.length,
+            randomAnimationName = animationNames[Math.ceil(Math.random() * len) - 1];
 
-                // Fallback (CSS3 keyframe, requestAnimationFrame)
-                if (!window.requestAnimationFrame) {
-                    $('.body-wrap > article').css({opacity: 1});
-                    if (navigator.userAgent.match(/Safari/i)) {
-                        function showArticle(){
-                            $(".article").each(function(){
-                                if( $(this).offset().top <= $(window).scrollTop()+$(window).height() && !($(this).hasClass('show')) ) {
-                                    $(this).removeClass("hidden").addClass("show");
-                                    $(this).addClass("is-hiddened");
-                                } else {
-                                    if(!$(this).hasClass("is-hiddened")) {
-                                        $(this).addClass("hidden");
-                                    }
-                                }
-                            })
-                        }
-                        $(window).on('scroll', function(){
-                            showArticle();
-                        });
-                        showArticle();
-                    }
-                    return;
-                }
+          // ie9 不支持css3 keyframe动画, safari不支持requestAnimationFrame, 不使用随机动画，切回原来的动画
+          if (!window.requestAnimationFrame) {
+              $('.body-wrap > article').css({opacity: 1});
 
-                var animateScope = ".body-wrap > article";
-                var $firstArticle = $(".body-wrap > article:first-child");
-                if ($firstArticle.height() > $(window).height()) {
-                    var animateScope = ".body-wrap > article:not(:first-child)";
-                    $firstArticle.css({opacity: 1});
-                }
-                ScrollReveal({
-                    duration: 0,
-                    afterReveal: function (domEl) {
-                        $(domEl).addClass('animated ' + randomAnimationName).css({opacity: 1})
-                    }
-                }).reveal(animateScope);
-            })
-        } else {
-            $('.body-wrap > article').css({opacity: 1});
-        }
+              if (navigator.userAgent.match(/Safari/i)) {
+                  function showArticle(){
+                      $(".article").each(function(){
+                          if( $(this).offset().top <= $(window).scrollTop()+$(window).height() && !($(this).hasClass('show')) ) {
+                              $(this).removeClass("hidden").addClass("show");
+                              $(this).addClass("is-hiddened");
+                          }else{
+                              if(!$(this).hasClass("is-hiddened")){
+                                  $(this).addClass("hidden");
+                              }
+                          }
+                      });
+                  }
+                  $(window).on('scroll', function(){
+                      showArticle();
+                  });
+                  showArticle();
+              }
+              return;
+          }
+          var animateScope = ".body-wrap > article";
+          var $firstArticle = $(".body-wrap > article:first-child");
+          if ($firstArticle.height() > $(window).height()) {
+              var animateScope = ".body-wrap > article:not(:first-child)";
+              $firstArticle.css({opacity: 1});
+          }
+          // document.body有些浏览器不支持监听scroll，所以使用默认的document.documentElement
+          ScrollReveal({
+            duration: 0,
+            afterReveal: function (domEl) {
+              // safari不支持requestAnimationFrame不支持document.documentElement的onscroll所以这里不会执行
+              // 初始状态设为opacity: 0, 动画效果更平滑一些(由于脚本加载是异步，页面元素渲染后在执行动画，感觉像是延时)
+              $(domEl).addClass('animated ' + randomAnimationName).css({opacity: 1});
+              }
+            }).reveal(animateScope);
+        });
+      } else {
+        $('.body-wrap > article').css({opacity: 1});
+      }
     }
 
     // TOC
@@ -140,7 +150,7 @@ require([], function (){
         require(['toc'], function(){ })
     }
 
-    // Random Color 边栏顶部随机颜色
+    // 随机颜色
     var colorList = ["#6da336", "#ff945c", "#66CC66", "#99CC99", "#CC6666", "#76becc", "#c99979", "#918597", "#4d4d4d"];
     var id = Math.ceil(Math.random()*(colorList.length-1));
     // PC
@@ -148,14 +158,13 @@ require([], function (){
     // Mobile
     $("#container #mobile-nav .overlay").css({"background-color": colorList[id],"opacity": .7});
 
-    // Table
     $("table").wrap("<div class='table-area'></div>");
 
     // Hide Comment Button
     $(document).ready(function() {
         if ($("#comments").length < 1) {
             $("#scroll > a:nth-child(2)").hide();
-        }
+        };
     })
 
     // Hide Labels
@@ -164,9 +173,19 @@ require([], function (){
             $("#footer").after("<button class='hide-labels'>TAGS</button>");
             $(".hide-labels").click(function() {
                 $(".article-info").toggle(200);
-            })
-        })
+            });
+        });
     }
+
+    // text-block
+    $(document).ready(function() {
+        var highlight = {
+            background: $(".article-entry .highlight").css("background"),
+            foreground: $(".article-entry .highlight").css("color")
+        }
+        $(".article-entry > pre").css("background-color", highlight.background);
+        $(".article-entry > pre code").css("color", highlight.foreground);
+    });
 
     // Task lists in markdown
     $('ul > li').each(function() {
@@ -202,3 +221,13 @@ require([], function (){
     })
 
 })
+
+
+
+/*var autoKeyword = [
+  "Hexo",
+  "Markdown",
+];
+$( "#local-search-input" ).autocomplete({
+  source: autoKeyword
+});*/

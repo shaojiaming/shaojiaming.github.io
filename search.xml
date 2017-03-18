@@ -7,18 +7,15 @@
       <title><![CDATA[Tomcat集群（linux）]]></title>
       <url>https://shaojiaming.github.io/2017/03/17/Tomcat%E9%9B%86%E7%BE%A4/</url>
       <content type="html"><![CDATA[<p>本文在red hat下进行搭建的，参考网上的搭建步骤结合自己的实际操作，从系统安装到最终的搭建进行详细的说明。<br><a id="more"></a></p>
-<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><pre><code>一.    前期准备    
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><pre><code>一.    前期准备    
 二.    环境安装    
     1.    安装gcc 和g++    
     2.    安装apache    
     3.    配置java运行环境变量    
     4.    配置tomcat    
     5.    配置JK连接器    
-三.    测试负载apache负载均衡是否生效    
-四.    tomcat性能优化    
-    1.    tomcat内存优化    
-    2.    tomcat 线程优化    
-</code></pre><h2 id="一-前期准备"><a href="#一-前期准备" class="headerlink" title="一.    前期准备"></a>一.    前期准备</h2><h3 id="安装介质"><a href="#安装介质" class="headerlink" title="安装介质 :"></a>安装介质 :</h3><table>
+三.    测试apache负载均衡是否生效    
+</code></pre><h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="安装介质"><a href="#安装介质" class="headerlink" title="安装介质 :"></a>安装介质 :</h3><table>
 <thead>
 <tr>
 <th>工具</th>
@@ -60,7 +57,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="二-环境安装"><a href="#二-环境安装" class="headerlink" title="二.    环境安装"></a>二.    环境安装</h2><h3 id="关闭linux-selinux"><a href="#关闭linux-selinux" class="headerlink" title="关闭linux selinux"></a>关闭linux selinux</h3><p>1、    root用户登录<br>2、    cd /etc/selinux<br>3、    vim config   设置selinux=disabled<br>Selinux 解释：<br>SELinux是一种基于域-类型 模型（domain-type）的强制访问控制（MAC）安全系统，它由NSA编写并设计成内核模块包含到内核中。</p>
+<h2 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h2><h3 id="关闭linux-selinux"><a href="#关闭linux-selinux" class="headerlink" title="关闭linux selinux"></a>关闭linux selinux</h3><p>1、    root用户登录<br>2、    cd /etc/selinux<br>3、    vim config   设置selinux=disabled<br>Selinux 解释：<br>SELinux是一种基于域-类型 模型（domain-type）的强制访问控制（MAC）安全系统，它由NSA编写并设计成内核模块包含到内核中。</p>
 <h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><p>1、    运行 service iptables status  查看防火墙状态<br>2、    如果提示防火墙未关闭请执行以下操作<br>3、    chkconfig iptables off  (关闭防火墙-永久生效)<br>4、    chkconfig iptables on  (打开防火墙-永久生效)<br>5、    重启服务器 reboot</p>
 <h3 id="安装gcc-和g"><a href="#安装gcc-和g" class="headerlink" title="安装gcc 和g++"></a>安装gcc 和g++</h3><p>挂载光驱</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># mkdir /mnt/cdrom</div><div class="line"># mount -o loop -t iso9660 /opt/software/rhel-server-6.4-x86_64-dvd.iso /mnt/cdrom/</div><div class="line"># rpm -ivh /mnt/cdrom/Packages/yum-3.2.29-40.el6.noarch.rpm</div><div class="line"># vi /etc/yum.repos.d/local.repo</div><div class="line">[rhel-Server]</div><div class="line">name=Server</div><div class="line">baseurl=file:///mnt/cdrom/Server</div><div class="line">enabled=1</div><div class="line">gpgcheck=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release</div><div class="line"># cat /etc/yum.repos.d/local.repo</div><div class="line"># yum clean all</div><div class="line"># yum list gcc*</div><div class="line"># yum install gcc.x86_64</div><div class="line"># yum install gcc-c++.x86_64</div></pre></td></tr></table></figure>
@@ -76,7 +73,7 @@
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">LoadModule jk_module modules/mod_jk<span class="selector-class">.so</span></div><div class="line">&lt;IfModule jk_module&gt;</div><div class="line">  JkWorkersFile conf/workers<span class="selector-class">.properties</span></div><div class="line">  JkLogFile logs/mod_jk<span class="selector-class">.log</span></div><div class="line">  JkLogLevel warn</div><div class="line">  JkMount <span class="comment">/*.jsp loadBalanceServers</span></div><div class="line">&lt;/IfModule&gt;</div></pre></td></tr></table></figure>
 <p>3.在conf文件夹下面添加workers.properties文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">--------------------------------------------------------------------------------------------------------------------------</div><div class="line">#</div><div class="line"># workers.properties</div><div class="line">#</div><div class="line"># list the workers by name</div><div class="line">worker.list=loadBalanceServers</div><div class="line"># localhost server 1</div><div class="line"># ------------------------</div><div class="line">worker.s1.port=6009 //6080端口转发port</div><div class="line">worker.s1.host=localhost  #tomcat的主机地址，如不为本机，请填写ip地址</div><div class="line">worker.s1.type=ajp13   #ajp13 端口号，在tomcat下server.xml配置,默认8009</div><div class="line">worker.s1.lbfactor=10   #server的加权比重，值越高，分得的请求越多</div><div class="line"># localhost server 2</div><div class="line"># ------------------------</div><div class="line">worker.s2.port=7009 //7080端口转发port</div><div class="line">worker.s2.host=localhost  #tomcat的主机地址，如不为本机，请填写ip地址</div><div class="line">worker.s2.type=ajp13  #ajp13 端口号，在tomcat下server.xml配置,默认8009</div><div class="line">worker.s2.lbfactor=10  #server的加权比重，值越高，分得的请求越多</div><div class="line"></div><div class="line">worker.loadBalanceServers.type=lb</div><div class="line">worker.loadBalanceServers.balanced_workers=s1,s2  #  #controller控制的tomcat的名称指定分担请求的tomcat由tomcat中的server.xml中设值</div><div class="line">worker.loadBalanceServers.sticky_session=true  #会话是否有粘性，false表示无粘性，同一个会话的请求会到不同的tomcat中处理</div><div class="line"></div><div class="line"># worker.controller.retries=3  #请求失败以后重试次数</div><div class="line"># worker.controller.sticky_session_force=false #当一个节点崩了，如果设置为true，那么服务器返回500错误给客户端，如果设置为false,则转发给其他的tomcat，但是会丢失回话信息</div></pre></td></tr></table></figure></p>
 <p>4.重启apache</p>
-<h2 id="三-测试apache负载均衡是否生效"><a href="#三-测试apache负载均衡是否生效" class="headerlink" title="三.    测试apache负载均衡是否生效"></a>三.    测试apache负载均衡是否生效</h2><ol>
+<h2 id="测试apache负载均衡是否生效"><a href="#测试apache负载均衡是否生效" class="headerlink" title="测试apache负载均衡是否生效"></a>测试apache负载均衡是否生效</h2><ol>
 <li>创建两个项目test</li>
 <li>在index.jsp中分别添加如下代码<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;%session.setAttribute("id","123");%&gt;</div><div class="line">&lt;%=session.getAttribute("id")%&gt;</div></pre></td></tr></table></figure>
 </li>
@@ -84,6 +81,12 @@
 <p>分别重启两台tomcat服务器, 在两台浏览器中输入<a href="http://10.46.2.10/test/index.jsp" target="_blank" rel="external">http://10.46.2.10/test/index.jsp</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> 力量之源 </category>
+            
+        </categories>
+        
         
         <tags>
             
