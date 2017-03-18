@@ -523,7 +523,7 @@ a {
     bottom: 10px;
     padding: 0.2em 0.4em;
     border-radius: 6px;
-    border-style: none;
+    border-style: outset;
     opacity: 0.9;
     background: rgba(255,255,255,0.8);
     font-weight: bold;
