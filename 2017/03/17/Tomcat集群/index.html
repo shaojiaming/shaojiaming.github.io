@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Craff Ming" />
+
+
+
+<meta name="description" content="本文在red hat下进行搭建的，参考网上的搭建步骤结合自己的实际操作，从系统安装到最终的搭建进行详细的说明。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomcat集群（linux）">
+<meta property="og:url" content="https://shaojiaming.github.io/2017/03/17/Tomcat集群/index.html">
+<meta property="og:site_name" content="Craff Ming">
+<meta property="og:description" content="本文在red hat下进行搭建的，参考网上的搭建步骤结合自己的实际操作，从系统安装到最终的搭建进行详细的说明。">
+<meta property="og:image" content="https://shaojiaming.github.io/images/1489737763633.png">
+<meta property="og:updated_time" content="2017-03-18T07:26:04.942Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tomcat集群（linux）">
+<meta name="twitter:description" content="本文在red hat下进行搭建的，参考网上的搭建步骤结合自己的实际操作，从系统安装到最终的搭建进行详细的说明。">
+<meta name="twitter:image" content="https://shaojiaming.github.io/images/1489737763633.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Craff Ming" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Tomcat集群（linux） | Craff Ming</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/111.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Craff Ming</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Craff Ming</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/111.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Craff Ming</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Tomcat集群" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/17/Tomcat集群/" class="article-date">
+      <time datetime="2017-03-17T07:01:49.000Z" itemprop="datePublished">2017-03-17</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Tomcat集群（linux）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/apache/">apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/">tomcat</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>本文在red hat下进行搭建的，参考网上的搭建步骤结合自己的实际操作，从系统安装到最终的搭建进行详细的说明。<br><a id="more"></a></p>
+<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><pre><code>一.    前期准备    
+二.    环境安装    
+    1.    安装gcc 和g++    
+    2.    安装apache    
+    3.    配置java运行环境变量    
+    4.    配置tomcat    
+    5.    配置JK连接器    
+三.    测试负载apache负载均衡是否生效    
+四.    tomcat性能优化    
+    1.    tomcat内存优化    
+    2.    tomcat 线程优化    
+</code></pre><h2 id="一-前期准备"><a href="#一-前期准备" class="headerlink" title="一.    前期准备"></a>一.    前期准备</h2><h3 id="安装介质"><a href="#安装介质" class="headerlink" title="安装介质 :"></a>安装介质 :</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rhel-server-6.4-x86_64-dvd.iso</td>
+<td>RedHat Enterprise Linux 6.4 x86 64bit</td>
+</tr>
+<tr>
+<td>tomcat-connectors-1.2.41.tar.gz</td>
+<td>Tomcat负载均衡模块</td>
+</tr>
+<tr>
+<td>httpd-2.4.10.tar.gz</td>
+<td>Apache源码包</td>
+</tr>
+<tr>
+<td>apr-1.5.1.tar.gz</td>
+<td>Apache依赖包</td>
+</tr>
+<tr>
+<td>apr-util-1.5.1.tar.gz</td>
+<td>Apache依赖包</td>
+</tr>
+<tr>
+<td>pcre-8.32.tar.gz</td>
+<td>Apache依赖包</td>
+</tr>
+<tr>
+<td>Tomcat 7.0.75</td>
+<td>Tomcat安装包</td>
+</tr>
+<tr>
+<td>jdk-7u79-linux-x64.tar.gz</td>
+<td>Java运行环境</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二-环境安装"><a href="#二-环境安装" class="headerlink" title="二.    环境安装"></a>二.    环境安装</h2><h3 id="关闭linux-selinux"><a href="#关闭linux-selinux" class="headerlink" title="关闭linux selinux"></a>关闭linux selinux</h3><p>1、    root用户登录<br>2、    cd /etc/selinux<br>3、    vim config   设置selinux=disabled<br>Selinux 解释：<br>SELinux是一种基于域-类型 模型（domain-type）的强制访问控制（MAC）安全系统，它由NSA编写并设计成内核模块包含到内核中。</p>
+<h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><p>1、    运行 service iptables status  查看防火墙状态<br>2、    如果提示防火墙未关闭请执行以下操作<br>3、    chkconfig iptables off  (关闭防火墙-永久生效)<br>4、    chkconfig iptables on  (打开防火墙-永久生效)<br>5、    重启服务器 reboot</p>
+<h3 id="安装gcc-和g"><a href="#安装gcc-和g" class="headerlink" title="安装gcc 和g++"></a>安装gcc 和g++</h3><p>挂载光驱</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># mkdir /mnt/cdrom</div><div class="line"># mount -o loop -t iso9660 /opt/software/rhel-server-6.4-x86_64-dvd.iso /mnt/cdrom/</div><div class="line"># rpm -ivh /mnt/cdrom/Packages/yum-3.2.29-40.el6.noarch.rpm</div><div class="line"># vi /etc/yum.repos.d/local.repo</div><div class="line">[rhel-Server]</div><div class="line">name=Server</div><div class="line">baseurl=file:///mnt/cdrom/Server</div><div class="line">enabled=1</div><div class="line">gpgcheck=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release</div><div class="line"># cat /etc/yum.repos.d/local.repo</div><div class="line"># yum clean all</div><div class="line"># yum list gcc*</div><div class="line"># yum install gcc.x86_64</div><div class="line"># yum install gcc-c++.x86_64</div></pre></td></tr></table></figure>
+<p>验证<br> <img src="/images/1489737763633.png" alt="&quot;图一&quot;"></p>
+<h3 id="安装apache-官网：http-httpd-apache-org"><a href="#安装apache-官网：http-httpd-apache-org" class="headerlink" title="安装apache(官网：http://httpd.apache.org/)"></a>安装apache(官网：<a href="http://httpd.apache.org/" target="_blank" rel="external">http://httpd.apache.org/</a>)</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">中间件存储路径/usr/local/</div><div class="line">Apache安装路径/usr/local/web/apache</div><div class="line"><span class="selector-id">#tar</span> -zxvf httpd-<span class="number">2.4</span>.<span class="number">10</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-id">#tar</span> -zxvf pcre-<span class="number">8.32</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-id">#tar</span> -zxvf apr-<span class="number">1.5</span>.<span class="number">1</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-id">#tar</span> -zxvf apr-util-<span class="number">1.5</span>.<span class="number">1</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"></div><div class="line"><span class="selector-id">#cd</span> pcre-<span class="number">8.32</span></div><div class="line">#./configure --prefix=/usr/local/pcre</div><div class="line"><span class="selector-id">#make</span></div><div class="line"><span class="selector-id">#make</span> install</div><div class="line"></div><div class="line"><span class="selector-id">#cd</span> ../apr-<span class="number">1.5</span>.<span class="number">1</span></div><div class="line">#./configure --prefix=/usr/local/apr</div><div class="line"><span class="selector-id">#make</span></div><div class="line"><span class="selector-id">#make</span> install</div><div class="line"></div><div class="line"><span class="selector-id">#cd</span> ../apr-util-<span class="number">1.5</span>.<span class="number">1</span></div><div class="line">#./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr</div><div class="line"><span class="selector-id">#make</span></div><div class="line"><span class="selector-id">#make</span> install</div><div class="line"></div><div class="line"><span class="selector-id">#cd</span> ../httpd-<span class="number">2.4</span>.<span class="number">10</span></div><div class="line">#./configure --prefix=/usr/local/web/apache --enable-so --enable-mods-shared=most --with-mpm=worker --enable-proxy --enable-rewrite --with-pcre=/usr/local/pcre --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util</div><div class="line"><span class="selector-id">#make</span></div><div class="line"><span class="selector-id">#make</span> install</div><div class="line"></div><div class="line">启动apache</div><div class="line">#/usr/local/web/apache/apachectl start</div></pre></td></tr></table></figure>
+<p>在本地打开浏览器，访问<a href="http://127.0.0.1" target="_blank" rel="external">http://127.0.0.1</a><br>如果出现“It Works!”则表示启动成功了</p>
+<h3 id="配置java运行环境变量"><a href="#配置java运行环境变量" class="headerlink" title="配置java运行环境变量"></a>配置java运行环境变量</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-id">#mkdir</span> /usr/java</div><div class="line"><span class="selector-id">#tar</span> –zxvf  jdk-<span class="number">7</span>u79-linux-x64<span class="selector-class">.tar</span><span class="selector-class">.gz</span>  /usr/java</div><div class="line"><span class="selector-id">#vi</span> /etc/profile</div><div class="line">export JAVA_HOME=/usr/java/jdk1.<span class="number">7.0</span>_05</div><div class="line">export CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/lib/<span class="selector-tag">dt</span><span class="selector-class">.jar</span>:<span class="variable">$JAVA_HOME</span>/lib/tools<span class="selector-class">.jar</span></div><div class="line">export PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</div><div class="line">export JAVA_HOME CLASSPATH PATH</div><div class="line"><span class="selector-id">#source</span> /etc/profile</div></pre></td></tr></table></figure>
+<p>验证:输入<br>javac<br>java –version</p>
+<h3 id="配置tomcat"><a href="#配置tomcat" class="headerlink" title="配置tomcat"></a>配置tomcat</h3><p>1.将tomcat分别放到两个文件夹下<br>2.修改service.xml文件的port<br>3.修改两台server的端口<br>4.添加jvmRoute(配置另一台时jvmRoute=”s2”)<br><code>&lt;Engine defaultHost=&quot;localhost&quot; name=&quot;Catalina&quot; jvmRoute=&quot;tomcat1&quot;&gt;</code><br>5.解开注释<br><code>&lt;Cluster className=&quot;org.apache.catalina.ha.tcp.SimpleTcpCluster&quot;/&gt;</code><br>6.启动两台tomcat 看是否能访问到对应的测试页面</p>
+<h3 id="配置JK连接器"><a href="#配置JK连接器" class="headerlink" title="配置JK连接器"></a>配置JK连接器</h3><p>1.编译jk</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># cd tomcat-connectors-1.2.32-src </div><div class="line"># cd native/</div><div class="line"># ./configure --with-apxs=/usr/local/web/apache/bin/apxs </div><div class="line"># make  </div><div class="line"># ls</div><div class="line"># cd apache-2.0/</div><div class="line"># ls </div><div class="line">bldjk54.qclsrc  Makefile.apxs     mod_jk.a    mod_jk.lo</div><div class="line">bldjk.qclsrc    Makefile.apxs.in  mod_jk.c    mod_jk.o</div><div class="line">config.m4       Makefile.in       mod_jk.dsp  mod_jk.so</div><div class="line">Makefile        Makefile.vc       mod_jk.la   NWGNUmakefile</div><div class="line"># sudo cp ./mod_jk.so /usr/local/web/apache/modules/</div></pre></td></tr></table></figure>
+<p>2.修改apache的httpd.conf文件<br>添加</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">LoadModule jk_module modules/mod_jk<span class="selector-class">.so</span></div><div class="line">&lt;IfModule jk_module&gt;</div><div class="line">  JkWorkersFile conf/workers<span class="selector-class">.properties</span></div><div class="line">  JkLogFile logs/mod_jk<span class="selector-class">.log</span></div><div class="line">  JkLogLevel warn</div><div class="line">  JkMount <span class="comment">/*.jsp loadBalanceServers</span></div><div class="line">&lt;/IfModule&gt;</div></pre></td></tr></table></figure>
+<p>3.在conf文件夹下面添加workers.properties文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">--------------------------------------------------------------------------------------------------------------------------</div><div class="line">#</div><div class="line"># workers.properties</div><div class="line">#</div><div class="line"># list the workers by name</div><div class="line">worker.list=loadBalanceServers</div><div class="line"># localhost server 1</div><div class="line"># ------------------------</div><div class="line">worker.s1.port=6009 //6080端口转发port</div><div class="line">worker.s1.host=localhost  #tomcat的主机地址，如不为本机，请填写ip地址</div><div class="line">worker.s1.type=ajp13   #ajp13 端口号，在tomcat下server.xml配置,默认8009</div><div class="line">worker.s1.lbfactor=10   #server的加权比重，值越高，分得的请求越多</div><div class="line"># localhost server 2</div><div class="line"># ------------------------</div><div class="line">worker.s2.port=7009 //7080端口转发port</div><div class="line">worker.s2.host=localhost  #tomcat的主机地址，如不为本机，请填写ip地址</div><div class="line">worker.s2.type=ajp13  #ajp13 端口号，在tomcat下server.xml配置,默认8009</div><div class="line">worker.s2.lbfactor=10  #server的加权比重，值越高，分得的请求越多</div><div class="line"></div><div class="line">worker.loadBalanceServers.type=lb</div><div class="line">worker.loadBalanceServers.balanced_workers=s1,s2  #  #controller控制的tomcat的名称指定分担请求的tomcat由tomcat中的server.xml中设值</div><div class="line">worker.loadBalanceServers.sticky_session=true  #会话是否有粘性，false表示无粘性，同一个会话的请求会到不同的tomcat中处理</div><div class="line"></div><div class="line"># worker.controller.retries=3  #请求失败以后重试次数</div><div class="line"># worker.controller.sticky_session_force=false #当一个节点崩了，如果设置为true，那么服务器返回500错误给客户端，如果设置为false,则转发给其他的tomcat，但是会丢失回话信息</div></pre></td></tr></table></figure></p>
+<p>4.重启apache</p>
+<h2 id="三-测试apache负载均衡是否生效"><a href="#三-测试apache负载均衡是否生效" class="headerlink" title="三.    测试apache负载均衡是否生效"></a>三.    测试apache负载均衡是否生效</h2><ol>
+<li>创建两个项目test</li>
+<li>在index.jsp中分别添加如下代码<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;%session.setAttribute("id","123");%&gt;</div><div class="line">&lt;%=session.getAttribute("id")%&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>分别重启两台tomcat服务器, 在两台浏览器中输入<a href="http://10.46.2.10/test/index.jsp" target="_blank" rel="external">http://10.46.2.10/test/index.jsp</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/17/Tomcat集群/">Tomcat集群（linux）</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Craff Ming</a></p>
+        <p><span>发布时间:</span>2017-03-17, 15:01:49</p>
+        <p><span>最后更新:</span>2017-03-18, 15:26:04</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/17/Tomcat集群/" title="Tomcat集群（linux）">https://shaojiaming.github.io/2017/03/17/Tomcat集群/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://shaojiaming.github.io/2017/03/17/Tomcat集群/　　作者: Craff Ming" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一-前期准备"><span class="toc-text">一.    前期准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装介质"><span class="toc-text">安装介质 :</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-环境安装"><span class="toc-text">二.    环境安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭linux-selinux"><span class="toc-text">关闭linux selinux</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭防火墙"><span class="toc-text">关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装gcc-和g"><span class="toc-text">安装gcc 和g++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装apache-官网：http-httpd-apache-org"><span class="toc-text">安装apache(官网：http://httpd.apache.org/)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置java运行环境变量"><span class="toc-text">配置java运行环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置tomcat"><span class="toc-text">配置tomcat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置JK连接器"><span class="toc-text">配置JK连接器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-测试apache负载均衡是否生效"><span class="toc-text">三.    测试apache负载均衡是否生效</span></a>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Tomcat集群（linux）　| Craff Ming　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/Tomcat集群/">Tomcat集群（linux）</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Craff Ming
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
