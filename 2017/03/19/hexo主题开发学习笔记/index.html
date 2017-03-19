@@ -1,61 +1,349 @@
-<?xml version="1.0" encoding="utf-8"?>
-<search>
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Craff Ming" />
+<meta name="renderer" content="webkit">
+<meta name="google" value="notranslate">
+
+
+
+<meta name="description" content="在搭建博客的过程中，遇到了一些主题上的bug，因看不懂代码（之前没接触过模版引擎），故简单的学习了一下hexo主题的开发。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo主题开发学习笔记">
+<meta property="og:url" content="https://shaojiaming.github.io/2017/03/19/hexo主题开发学习笔记/index.html">
+<meta property="og:site_name" content="Craff Ming">
+<meta property="og:description" content="在搭建博客的过程中，遇到了一些主题上的bug，因看不懂代码（之前没接触过模版引擎），故简单的学习了一下hexo主题的开发。">
+<meta property="og:updated_time" content="2017-03-19T15:16:52.048Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hexo主题开发学习笔记">
+<meta name="twitter:description" content="在搭建博客的过程中，遇到了一些主题上的bug，因看不懂代码（之前没接触过模版引擎），故简单的学习了一下hexo主题的开发。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternative" href="/atom.xml" title="Craff Ming" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/title.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>hexo主题开发学习笔记 | Craff Ming</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?a4938c90e05043bd9774ff12368e45aa";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/111.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Craff Ming</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">留言板</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="/&#115;&#106;&#109;&#51;&#57;&#51;&#52;&#50;&#57;&#48;&#50;&#51;&#64;&#103;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/shaojiaming" title="GitHub"></a>
+                            
+                                <a class="fa TiddlyWiki" href="/wiki/" title="TiddlyWiki"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ejs/">ejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="//www.netcan666.com/">Netcan</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="//f2e-tlj.me/">Ryuu</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="//codinglife.in/">Andy_Zheng</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="//syncshinee.github.io/">skyxuan</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="//luuman.github.io/">世平阜康</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="//wixy.top/">王煜</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="//www.smallyi.com/">小忆</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="//taozj.org/">Nicol_TAO</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="//orangexc.xyz/">Orange</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.coding.me/yelee/">Yelee</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我就是我，颜色不一样的烟火</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Craff Ming</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/111.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Craff Ming</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">留言板</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="/&#115;&#106;&#109;&#51;&#57;&#51;&#52;&#50;&#57;&#48;&#50;&#51;&#64;&#103;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/shaojiaming" title="GitHub"></a>
+                            
+                                <a class="fa TiddlyWiki" target="_blank" href="/wiki/" title="TiddlyWiki"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-hexo主题开发学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2017/03/19/hexo主题开发学习笔记/" class="article-date">
+      <time datetime="2017-03-18T16:00:00.000Z" itemprop="datePublished">2017-03-19</time>
+</a>
+
+ 
+    <a href="/2017/03/19/hexo主题开发学习笔记/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count" "></span>
+        
+        
+    </a>
+
+    </div>
   
+  <div class="article-inner">
     
-    <entry>
-      <title><![CDATA[JavaScript学习笔记]]></title>
-      <url>https://shaojiaming.github.io/2017/03/19/JavaScript%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94/</url>
-      <content type="html"><![CDATA[<ul>
-<li>本文是自己学习新技能时的随笔，记录学习过程中自己认为重要的或者是感觉使用的一些知识点，以备不时之需。而且这是我第一次写博客，还有点小激动呢~(≧▽≦)/~</li>
-<li>学习资料来源：W3Cshjool<a id="more"></a>
-<h3 id="E-mail验证"><a href="#E-mail验证" class="headerlink" title="E-mail验证"></a>E-mail验证</h3></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">&lt;script type="text/javascript"&gt;</div><div class="line">function validate_email(field,alerttxt)&#123;</div><div class="line">  with (field)&#123;</div><div class="line">      apos=value.indexOf("@") // indexOf() 来定位字符串中某一个指定的字符首次出现的位置。</div><div class="line">      dotpos=value.lastIndexOf(".")</div><div class="line">      if (apos&lt;1||dotpos-apos&lt;2) &#123;</div><div class="line">        alert(alerttxt);return false&#125;</div><div class="line">      else &#123;</div><div class="line">          return true&#125;</div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function validate_form(thisform)&#123;</div><div class="line">  with (thisform)&#123;</div><div class="line">    if (validate_email(email,"Not a valid e-mail address!")==false)&#123;</div><div class="line">      email.focus();return false&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;/head&gt;</div><div class="line"></div><div class="line">&lt;body&gt;</div><div class="line">&lt;form action="submitpage.htm"onsubmit="return validate_form(this);" method="post"&gt;</div><div class="line">Email: &lt;input type="text" name="email" size="30"&gt;</div><div class="line">&lt;input type="submit" value="Submit"&gt;</div><div class="line">&lt;/form&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<h3 id="HTML事件"><a href="#HTML事件" class="headerlink" title="HTML事件"></a>HTML事件</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">&lt;script&gt;</div><div class="line">function changetext(id)&#123;</div><div class="line">  id.innerHTML="谢谢!";</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">/*可以在函数中传this，指代当前的标签*/</div><div class="line">&lt;h1 onclick="changetext(this)"&gt;请点击该文本&lt;/h1&gt;</div><div class="line"></div><div class="line">&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<ul>
-<li>onload 和 onunload 事件会在用户进入或离开页面时被触发。</li>
-<li>onload 事件可用于检测访问者的浏览器类型和浏览器版本，并基于这些信息来加载网页的正确版本。</li>
-<li>onload 和 onunload 事件可用于处理 cookie。</li>
-<li>onmousedown 鼠标按下事件</li>
-<li>onmouseup 鼠标释放事件<h3 id="创建新的-HTML-元素"><a href="#创建新的-HTML-元素" class="headerlink" title="创建新的 HTML 元素"></a>创建新的 HTML 元素</h3></li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;div id="div1"&gt;</div><div class="line">&lt;p id="p1"&gt;这是一个段落&lt;/p&gt;</div><div class="line">&lt;p id="p2"&gt;这是另一个段落&lt;/p&gt;</div><div class="line">&lt;/div&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">var para=document.createElement("p"); //创建新的&lt;p&gt;标签</div><div class="line">var node=document.createTextNode("这是新段落。"); //如需向 &lt;p&gt; 元素添加文本，您必须首先创建文本节点。这段代码创建了一个文本节点</div><div class="line">para.appendChild(node); //然后您必须向 &lt;p&gt; 元素追加这个文本节点</div><div class="line"></div><div class="line">var element=document.getElementById("div1");</div><div class="line">element.appendChild(para); //这段代码向这个已有的元素追加新元素</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-<h3 id="删除HTML元素"><a href="#删除HTML元素" class="headerlink" title="删除HTML元素"></a>删除HTML元素</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;div id="div1"&gt;</div><div class="line">&lt;p id="p1"&gt;这是一个段落。&lt;/p&gt;</div><div class="line">&lt;p id="p2"&gt;这是另一个段落。&lt;/p&gt;</div><div class="line">&lt;/div&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">var parent=document.getElementById("div1");</div><div class="line">var child=document.getElementById("p1");</div><div class="line">parent.removeChild(child);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-<h3 id="对象构造器"><a href="#对象构造器" class="headerlink" title="对象构造器"></a>对象构造器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">person</span>(<span class="params">firstname,lastname,age,eyecolor</span>)</span></div><div class="line">&#123;</div><div class="line"><span class="keyword">this</span>.firstname=firstname;</div><div class="line"><span class="keyword">this</span>.lastname=lastname;</div><div class="line"><span class="keyword">this</span>.age=age;</div><div class="line"><span class="keyword">this</span>.eyecolor=eyecolor;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> myFather=<span class="keyword">new</span> person(<span class="string">"Bill"</span>,<span class="string">"Gates"</span>,<span class="number">56</span>,<span class="string">"blue"</span>);</div><div class="line"><span class="keyword">var</span> myMother=<span class="keyword">new</span> person(<span class="string">"Steve"</span>,<span class="string">"Jobs"</span>,<span class="number">48</span>,<span class="string">"green"</span>);</div></pre></td></tr></table></figure>
-<h3 id="String对象实例"><a href="#String对象实例" class="headerlink" title="String对象实例"></a>String对象实例</h3><ul>
-<li>match() 来查找字符串中特定的字符，并且如果找到的话，则返回这个字符。</li>
-<li>indexOf() 来定位字符串中某一个指定的字符首次出现的位置。</li>
-<li>replace() 方法在字符串中用某些字符替换另一些字符。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line"><span class="keyword">var</span> str=<span class="string">"Visit Microsoft!"</span></div><div class="line"><span class="built_in">document</span>.write(str.replace(<span class="regexp">/Microsoft/</span>,<span class="string">"W3School"</span>))</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
-<ul>
-<li>更多方法参考 <a href="http://www.w3school.com.cn/jsref/jsref_obj_string.asp" target="_blank" rel="external">JavaScript String 对象参考手册</a></li>
-<li><a href="http://www.w3school.com.cn/jsref/jsref_obj_number.asp" target="_blank" rel="external">Number 对象参考手册</a>，<a href="http://www.w3school.com.cn/jsref/jsref_obj_date.asp" target="_blank" rel="external">JavaScript Date 对象参考手册</a>，<a href="http://www.w3school.com.cn/jsref/jsref_obj_array.asp" target="_blank" rel="external"> JavaScript Array 对象参考手册</a></li>
-<li>如果逻辑对象无初始值或者其值为 0、-0、null、””、false、undefined 或者 NaN，那么对象的值为 false。否则，其值为 true（即使当自变量为字符串 “false” 时）！</li>
-</ul>
-<h3 id="JavaScript-Window-浏览器对象模型"><a href="#JavaScript-Window-浏览器对象模型" class="headerlink" title="JavaScript Window - 浏览器对象模型"></a>JavaScript Window - 浏览器对象模型</h3><p>Window 尺寸<br>有三种方法能够确定浏览器窗口的尺寸（浏览器的视口，不包括工具栏和滚动条）。<br>对于Internet Explorer、Chrome、Firefox、Opera 以及 Safari：<br> <code>window.innerHeight</code> - 浏览器窗口的内部高度<br> <code>window.innerWidth</code> - 浏览器窗口的内部宽度<br>对于 Internet Explorer 8、7、6、5：<br> <code>document.documentElement.clientHeight</code><br> <code>document.documentElement.clientWidth</code><br>或者<br> <code>document.body.clientHeight</code><br> <code>document.body.clientWidth</code><br> 一些其他方法：<br> <code>window.open()</code> - 打开新窗口<br> <code>window.close()</code> - 关闭当前窗口<br> <code>window.moveTo()</code> - 移动当前窗口<br> <code>window.resizeTo()</code> - 调整当前窗口的尺寸<br> <strong>其他一些对象（Screen，Location，History，Navigator，PopupAlert，Timing，Cookies）查看文档</strong></p>
-<h3 id="更多内容参考-JavaScript-参考手册"><a href="#更多内容参考-JavaScript-参考手册" class="headerlink" title="更多内容参考 JavaScript 参考手册"></a>更多内容参考 <a href="http://www.w3school.com.cn/jsref/index.asp" target="_blank" rel="external">JavaScript 参考手册</a></h3>]]></content>
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      hexo主题开发学习笔记
+    </h1>
+  
+
+      </header>
       
-        <categories>
-            
-            <category> 学习笔记 </category>
-            
-        </categories>
+      <div class="article-info article-info-post">
         
+
         
-        <tags>
-            
-            <tag> JavaScript </tag>
-            
-        </tags>
-        
-    </entry>
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ejs/">ejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-    <entry>
-      <title><![CDATA[hexo主题开发学习笔记]]></title>
-      <url>https://shaojiaming.github.io/2017/03/19/hexo%E4%B8%BB%E9%A2%98%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-      <content type="html"><![CDATA[<p>在搭建博客的过程中，遇到了一些主题上的bug，因看不懂代码（之前没接触过模版引擎），故简单的学习了一下hexo主题的开发。<br><a id="more"></a></p>
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+          
+        <p>在搭建博客的过程中，遇到了一些主题上的bug，因看不懂代码（之前没接触过模版引擎），故简单的学习了一下hexo主题的开发。<br><a id="more"></a></p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>开始之前需了解：</p>
 <ul>
 <li>模版引擎</li>
@@ -147,116 +435,279 @@
 <li>但是，如果您开启了 relative_link 参数的话，请勿使用局部缓存功能，因为相对链接在每个页面可能不同。</li>
 </ul>
 <p><code>&lt;%- partial(&#39;_partial/mobile-nav&#39;, null, {cache: !config.relative_link}) %&gt;</code></p>
-]]></content>
+
       
-        
-        <tags>
-            
-            <tag> ejs </tag>
-            
-            <tag> hexo </tag>
-            
-        </tags>
-        
-    </entry>
+    </div>
     
-    <entry>
-      <title><![CDATA[Tomcat集群（linux）]]></title>
-      <url>https://shaojiaming.github.io/2017/03/17/Tomcat%E9%9B%86%E7%BE%A4/</url>
-      <content type="html"><![CDATA[<p>本文在red hat下进行搭建的，参考网上的搭建步骤结合自己的实际操作，从系统安装到最终的搭建进行详细的说明。<br><a id="more"></a></p>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><pre><code>一.    前期准备    
-二.    环境安装    
-    1.    安装gcc 和g++    
-    2.    安装apache    
-    3.    配置java运行环境变量    
-    4.    配置tomcat    
-    5.    配置JK连接器    
-三.    测试apache负载均衡是否生效    
-</code></pre><h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="安装介质"><a href="#安装介质" class="headerlink" title="安装介质 :"></a>安装介质 :</h3><table>
-<thead>
-<tr>
-<th>工具</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>rhel-server-6.4-x86_64-dvd.iso</td>
-<td>RedHat Enterprise Linux 6.4 x86 64bit</td>
-</tr>
-<tr>
-<td>tomcat-connectors-1.2.41.tar.gz</td>
-<td>Tomcat负载均衡模块</td>
-</tr>
-<tr>
-<td>httpd-2.4.10.tar.gz</td>
-<td>Apache源码包</td>
-</tr>
-<tr>
-<td>apr-1.5.1.tar.gz</td>
-<td>Apache依赖包</td>
-</tr>
-<tr>
-<td>apr-util-1.5.1.tar.gz</td>
-<td>Apache依赖包</td>
-</tr>
-<tr>
-<td>pcre-8.32.tar.gz</td>
-<td>Apache依赖包</td>
-</tr>
-<tr>
-<td>Tomcat 7.0.75</td>
-<td>Tomcat安装包</td>
-</tr>
-<tr>
-<td>jdk-7u79-linux-x64.tar.gz</td>
-<td>Java运行环境</td>
-</tr>
-</tbody>
-</table>
-<h2 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h2><h3 id="关闭linux-selinux"><a href="#关闭linux-selinux" class="headerlink" title="关闭linux selinux"></a>关闭linux selinux</h3><p>1、    root用户登录<br>2、    cd /etc/selinux<br>3、    vim config   设置selinux=disabled<br>Selinux 解释：<br>SELinux是一种基于域-类型 模型（domain-type）的强制访问控制（MAC）安全系统，它由NSA编写并设计成内核模块包含到内核中。</p>
-<h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><p>1、    运行 service iptables status  查看防火墙状态<br>2、    如果提示防火墙未关闭请执行以下操作<br>3、    chkconfig iptables off  (关闭防火墙-永久生效)<br>4、    chkconfig iptables on  (打开防火墙-永久生效)<br>5、    重启服务器 reboot</p>
-<h3 id="安装gcc-和g"><a href="#安装gcc-和g" class="headerlink" title="安装gcc 和g++"></a>安装gcc 和g++</h3><p>挂载光驱</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># mkdir /mnt/cdrom</div><div class="line"># mount -o loop -t iso9660 /opt/software/rhel-server-6.4-x86_64-dvd.iso /mnt/cdrom/</div><div class="line"># rpm -ivh /mnt/cdrom/Packages/yum-3.2.29-40.el6.noarch.rpm</div><div class="line"># vi /etc/yum.repos.d/local.repo</div><div class="line">[rhel-Server]</div><div class="line">name=Server</div><div class="line">baseurl=file:///mnt/cdrom/Server</div><div class="line">enabled=1</div><div class="line">gpgcheck=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release</div><div class="line"># cat /etc/yum.repos.d/local.repo</div><div class="line"># yum clean all</div><div class="line"># yum list gcc*</div><div class="line"># yum install gcc.x86_64</div><div class="line"># yum install gcc-c++.x86_64</div></pre></td></tr></table></figure>
-<p>验证<br> <img src="/images/1489737763633.png" alt="&quot;图一&quot;"></p>
-<h3 id="安装apache-官网：http-httpd-apache-org"><a href="#安装apache-官网：http-httpd-apache-org" class="headerlink" title="安装apache(官网：http://httpd.apache.org/)"></a>安装apache(官网：<a href="http://httpd.apache.org/" target="_blank" rel="external">http://httpd.apache.org/</a>)</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">中间件存储路径/usr/local/</div><div class="line">Apache安装路径/usr/local/web/apache</div><div class="line"><span class="selector-id">#tar</span> -zxvf httpd-<span class="number">2.4</span>.<span class="number">10</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-id">#tar</span> -zxvf pcre-<span class="number">8.32</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-id">#tar</span> -zxvf apr-<span class="number">1.5</span>.<span class="number">1</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"><span class="selector-id">#tar</span> -zxvf apr-util-<span class="number">1.5</span>.<span class="number">1</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line"></div><div class="line"><span class="selector-id">#cd</span> pcre-<span class="number">8.32</span></div><div class="line">#./configure --prefix=/usr/local/pcre</div><div class="line"><span class="selector-id">#make</span></div><div class="line"><span class="selector-id">#make</span> install</div><div class="line"></div><div class="line"><span class="selector-id">#cd</span> ../apr-<span class="number">1.5</span>.<span class="number">1</span></div><div class="line">#./configure --prefix=/usr/local/apr</div><div class="line"><span class="selector-id">#make</span></div><div class="line"><span class="selector-id">#make</span> install</div><div class="line"></div><div class="line"><span class="selector-id">#cd</span> ../apr-util-<span class="number">1.5</span>.<span class="number">1</span></div><div class="line">#./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr</div><div class="line"><span class="selector-id">#make</span></div><div class="line"><span class="selector-id">#make</span> install</div><div class="line"></div><div class="line"><span class="selector-id">#cd</span> ../httpd-<span class="number">2.4</span>.<span class="number">10</span></div><div class="line">#./configure --prefix=/usr/local/web/apache --enable-so --enable-mods-shared=most --with-mpm=worker --enable-proxy --enable-rewrite --with-pcre=/usr/local/pcre --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util</div><div class="line"><span class="selector-id">#make</span></div><div class="line"><span class="selector-id">#make</span> install</div><div class="line"></div><div class="line">启动apache</div><div class="line">#/usr/local/web/apache/apachectl start</div></pre></td></tr></table></figure>
-<p>在本地打开浏览器，访问<a href="http://127.0.0.1" target="_blank" rel="external">http://127.0.0.1</a><br>如果出现“It Works!”则表示启动成功了</p>
-<h3 id="配置java运行环境变量"><a href="#配置java运行环境变量" class="headerlink" title="配置java运行环境变量"></a>配置java运行环境变量</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-id">#mkdir</span> /usr/java</div><div class="line"><span class="selector-id">#tar</span> –zxvf  jdk-<span class="number">7</span>u79-linux-x64<span class="selector-class">.tar</span><span class="selector-class">.gz</span>  /usr/java</div><div class="line"><span class="selector-id">#vi</span> /etc/profile</div><div class="line">export JAVA_HOME=/usr/java/jdk1.<span class="number">7.0</span>_05</div><div class="line">export CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/lib/<span class="selector-tag">dt</span><span class="selector-class">.jar</span>:<span class="variable">$JAVA_HOME</span>/lib/tools<span class="selector-class">.jar</span></div><div class="line">export PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</div><div class="line">export JAVA_HOME CLASSPATH PATH</div><div class="line"><span class="selector-id">#source</span> /etc/profile</div></pre></td></tr></table></figure>
-<p>验证:输入<br>javac<br>java –version</p>
-<h3 id="配置tomcat"><a href="#配置tomcat" class="headerlink" title="配置tomcat"></a>配置tomcat</h3><p>1.将tomcat分别放到两个文件夹下<br>2.修改service.xml文件的port<br>3.修改两台server的端口<br>4.添加jvmRoute(配置另一台时jvmRoute=”s2”)<br><code>&lt;Engine defaultHost=&quot;localhost&quot; name=&quot;Catalina&quot; jvmRoute=&quot;tomcat1&quot;&gt;</code><br>5.解开注释<br><code>&lt;Cluster className=&quot;org.apache.catalina.ha.tcp.SimpleTcpCluster&quot;/&gt;</code><br>6.启动两台tomcat 看是否能访问到对应的测试页面</p>
-<h3 id="配置JK连接器"><a href="#配置JK连接器" class="headerlink" title="配置JK连接器"></a>配置JK连接器</h3><p>1.编译jk</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># cd tomcat-connectors-1.2.32-src </div><div class="line"># cd native/</div><div class="line"># ./configure --with-apxs=/usr/local/web/apache/bin/apxs </div><div class="line"># make  </div><div class="line"># ls</div><div class="line"># cd apache-2.0/</div><div class="line"># ls </div><div class="line">bldjk54.qclsrc  Makefile.apxs     mod_jk.a    mod_jk.lo</div><div class="line">bldjk.qclsrc    Makefile.apxs.in  mod_jk.c    mod_jk.o</div><div class="line">config.m4       Makefile.in       mod_jk.dsp  mod_jk.so</div><div class="line">Makefile        Makefile.vc       mod_jk.la   NWGNUmakefile</div><div class="line"># sudo cp ./mod_jk.so /usr/local/web/apache/modules/</div></pre></td></tr></table></figure>
-<p>2.修改apache的httpd.conf文件<br>添加</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">LoadModule jk_module modules/mod_jk<span class="selector-class">.so</span></div><div class="line">&lt;IfModule jk_module&gt;</div><div class="line">  JkWorkersFile conf/workers<span class="selector-class">.properties</span></div><div class="line">  JkLogFile logs/mod_jk<span class="selector-class">.log</span></div><div class="line">  JkLogLevel warn</div><div class="line">  JkMount <span class="comment">/*.jsp loadBalanceServers</span></div><div class="line">&lt;/IfModule&gt;</div></pre></td></tr></table></figure>
-<p>3.在conf文件夹下面添加workers.properties文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">--------------------------------------------------------------------------------------------------------------------------</div><div class="line">#</div><div class="line"># workers.properties</div><div class="line">#</div><div class="line"># list the workers by name</div><div class="line">worker.list=loadBalanceServers</div><div class="line"># localhost server 1</div><div class="line"># ------------------------</div><div class="line">worker.s1.port=6009 //6080端口转发port</div><div class="line">worker.s1.host=localhost  #tomcat的主机地址，如不为本机，请填写ip地址</div><div class="line">worker.s1.type=ajp13   #ajp13 端口号，在tomcat下server.xml配置,默认8009</div><div class="line">worker.s1.lbfactor=10   #server的加权比重，值越高，分得的请求越多</div><div class="line"># localhost server 2</div><div class="line"># ------------------------</div><div class="line">worker.s2.port=7009 //7080端口转发port</div><div class="line">worker.s2.host=localhost  #tomcat的主机地址，如不为本机，请填写ip地址</div><div class="line">worker.s2.type=ajp13  #ajp13 端口号，在tomcat下server.xml配置,默认8009</div><div class="line">worker.s2.lbfactor=10  #server的加权比重，值越高，分得的请求越多</div><div class="line"></div><div class="line">worker.loadBalanceServers.type=lb</div><div class="line">worker.loadBalanceServers.balanced_workers=s1,s2  #  #controller控制的tomcat的名称指定分担请求的tomcat由tomcat中的server.xml中设值</div><div class="line">worker.loadBalanceServers.sticky_session=true  #会话是否有粘性，false表示无粘性，同一个会话的请求会到不同的tomcat中处理</div><div class="line"></div><div class="line"># worker.controller.retries=3  #请求失败以后重试次数</div><div class="line"># worker.controller.sticky_session_force=false #当一个节点崩了，如果设置为true，那么服务器返回500错误给客户端，如果设置为false,则转发给其他的tomcat，但是会丢失回话信息</div></pre></td></tr></table></figure></p>
-<p>4.重启apache</p>
-<h2 id="测试apache负载均衡是否生效"><a href="#测试apache负载均衡是否生效" class="headerlink" title="测试apache负载均衡是否生效"></a>测试apache负载均衡是否生效</h2><ol>
-<li>创建两个项目test</li>
-<li>在index.jsp中分别添加如下代码<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;%session.setAttribute("id","123");%&gt;</div><div class="line">&lt;%=session.getAttribute("id")%&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>分别重启两台tomcat服务器, 在两台浏览器中输入<a href="http://10.46.2.10/test/index.jsp" target="_blank" rel="external">http://10.46.2.10/test/index.jsp</a></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 力量之源 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> java </tag>
-            
-            <tag> tomcat </tag>
-            
-            <tag> apache </tag>
-            
-        </tags>
-        
-    </entry>
+  </div>
+  
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/19/hexo主题开发学习笔记/">hexo主题开发学习笔记</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Craff Ming 的个人博客">Craff Ming</a></p>
+        <p><span>发布时间:</span>2017-03-19, 00:00</p>
+        <p><span>最后更新:</span>2017-03-19, 23:16</p>
+        
+            <p>
+                <span>更新历史:</span><i class="fa fa-github"></i>
+                <a href="https://github.com/MOxFIVE/Markdown-Archives-Backup/blame/master/_posts/2017-03-19.hexo主题开发学习笔记.md" title="顺序查看文章各部分修改记录" target = "_blank">Blame</a>,
+                <a href="https://github.com/MOxFIVE/Markdown-Archives-Backup/commits/master/_posts/2017-03-19.hexo主题开发学习笔记.md" title="查看文章有关更新记录" target = "_blank">History</a><span class="raw">文本模式:</span><i class="fa fa-file-text-o"></i>
+                <a href="https://raw.githubusercontent.com/MOxFIVE/Markdown-Archives-Backup/master/_posts/2017-03-19.hexo主题开发学习笔记.md" title="查看 & 下载文章 Markdown 原始文本" target = "_blank"> .md Raw</a>
+            </p>
+        
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/19/hexo主题开发学习笔记/" title="hexo主题开发学习笔记">https://shaojiaming.github.io/2017/03/19/hexo主题开发学习笔记/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://shaojiaming.github.io/2017/03/19/hexo主题开发学习笔记/　　作者: Craff Ming" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+    
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/19/JavaScript学习随笔/">
+                    JavaScript学习笔记
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/17/Tomcat集群/">
+                    Tomcat集群（linux）
+                </a>
+            </div>
+        
+    </nav>
+
   
-  
-</search>
+</article>
+
+
+
+
+
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主题文件目录结构"><span class="toc-number">2.</span> <span class="toc-text">主题文件目录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建布局模版"><span class="toc-number">3.</span> <span class="toc-text">创建布局模版</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ejs页面文件"><span class="toc-number">3.1.</span> <span class="toc-text">ejs页面文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#css样式文件"><span class="toc-number">3.2.</span> <span class="toc-text">css样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主题配置"><span class="toc-number">3.3.</span> <span class="toc-text">主题配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化"><span class="toc-number">4.</span> <span class="toc-text">优化</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"true"];
+    </script>
+
+
+
+    
+    <div class="share">
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"hexo主题开发学习笔记　| Craff Ming　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    </div>
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/03/19/hexo主题开发学习笔记/" data-title="hexo主题开发学习笔记" data-url="https://shaojiaming.github.io/2017/03/19/hexo主题开发学习笔记/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"craffming"};
+        function loadComment() {
+            var d = document, s = d.createElement('script');
+            s.src = '//moxfive.xyz/resources/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        $(function() { 
+            var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=craffming&threads=2017/03/19/hexo主题开发学习笔记/&callback=?";
+            $.getJSON(jsonUrl, function(result) {
+                $.each(result.response, function(i, field) {
+                    var value = field.comments;
+                    if (value > 0) {
+                        $(".count-comment").text(value);
+                        return;
+                    }
+                })
+
+            })
+        });
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/19/JavaScript学习随笔/" title="上一篇: JavaScript学习笔记">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/17/Tomcat集群/" title="下一篇: Tomcat集群（linux）">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/JavaScript学习随笔/">JavaScript学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/hexo主题开发学习笔记/">hexo主题开发学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/Tomcat集群/">Tomcat集群（linux）</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 Craff Ming
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题 v3.5">Yelee</a><span> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+    <script src="/js/GithubRepoWidget.js"></script>
+
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 7;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+             github: ".github-widget a", 
+            
+             post: ".article-entry a[href]", 
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
